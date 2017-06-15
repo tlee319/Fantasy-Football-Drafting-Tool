@@ -1,5 +1,4 @@
-,,,,,Game,Game,Pass,Pass,Pass,Pass,Pass,Rush,Rush,Rush,Rush,Rece,Rece,Rece,Rece,Rece,Fant
-Rk,,Tm,FantPos,Age,G,GS,Cmp,Att,Yds,TD,Int,Att,Yds,Y/A,TD,Tgt,Rec,Yds,Y/R,TD,FantPt▼
+Rank,Name,Team,Pos,Age,G,GS,Cmp,PAtt,PYds,PTD,Int,RuAtt,RuYds,RuYA,TD,Tgt,Rec,ReYds,ReYR,TD,FantPt
 1,Aaron Rodgers*\RodgAa00,GNB,QB,33,16,16,401,610,4428,40,7,67,369,5.51,4,0,0,0,,0,382
 2,Matt Ryan*+\RyanMa00,ATL,QB,31,16,16,373,534,4944,38,7,35,117,3.34,0,0,0,0,,0,355
 3,Drew Brees*\BreeDr00,NOR,QB,37,16,16,471,673,5208,37,15,23,20,0.87,2,0,0,0,,0,336
