@@ -1,20 +1,20 @@
 <?xml version='1.0' encoding='utf-8' ?>
 
-<!-- build 10200.17.0216.1925                               -->
-<workbook source-build='10.2.0 (10200.17.0216.1925)' source-platform='mac' version='10.2' xmlns:user='http://www.tableausoftware.com/xml/user'>
+<!-- build 10200.17.0614.1936                               -->
+<workbook source-build='10.2.3 (10200.17.0614.1936)' source-platform='mac' version='10.2' xmlns:user='http://www.tableausoftware.com/xml/user'>
   <preferences>
     <preference name='ui.encoding.shelf.height' value='24' />
     <preference name='ui.shelf.height' value='26' />
   </preferences>
   <datasources>
-    <datasource caption='2014 Raw Data' inline='true' name='federated.0no2y661r4vfmh1ez0ei00o59grz' version='10.2'>
+    <datasource caption='2014 Raw Data' inline='true' name='federated.0l85zsq0hh57pu1bvv2qk1e0h83r' version='10.2'>
       <connection class='federated'>
         <named-connections>
-          <named-connection caption='2014 Raw Data' name='textscan.02o1agj1hpyj6f11vyo2n17a9o4n'>
-            <connection class='textscan' directory='/Users/ThomasLee/Dropbox/Fantasy Football' filename='2014 Raw Data.txt' password='' server='' />
+          <named-connection caption='2014 Raw Data' name='textscan.1j5kgb71n83evl15fzyfk15kfru7'>
+            <connection class='textscan' directory='/Users/ThomasLee/Dropbox/Fantasy Football/Data' filename='2014 Raw Data.txt' password='' server='' />
           </named-connection>
         </named-connections>
-        <relation connection='textscan.02o1agj1hpyj6f11vyo2n17a9o4n' name='2014 Raw Data.txt' table='[2014 Raw Data#txt]' type='table'>
+        <relation connection='textscan.1j5kgb71n83evl15fzyfk15kfru7' name='2014 Raw Data.txt' table='[2014 Raw Data#txt]' type='table'>
           <columns character-set='UTF-8' header='yes' locale='en_US' separator=','>
             <column datatype='integer' name='Rk' ordinal='0' />
             <column datatype='string' name='Name' ordinal='1' />
@@ -394,8 +394,9 @@
       <aliases enabled='yes' />
       <column caption='RuAtt' datatype='integer' name='[Att 1]' role='measure' type='quantitative' />
       <column caption='PAtt' datatype='integer' name='[Att]' role='measure' type='quantitative' />
+      <column caption='PCmp' datatype='integer' name='[Cmp]' role='measure' type='quantitative' />
       <column caption='Pos' datatype='string' name='[FantPos]' role='dimension' type='nominal' />
-      <column caption='FantPt' datatype='integer' name='[FantPt]' role='measure' type='quantitative' />
+      <column caption='Fant Pt' datatype='integer' name='[FantPt]' role='measure' type='quantitative' />
       <column datatype='integer' name='[Number of Records]' role='measure' type='quantitative' user:auto-column='numrec'>
         <calculation class='tableau' formula='1' />
       </column>

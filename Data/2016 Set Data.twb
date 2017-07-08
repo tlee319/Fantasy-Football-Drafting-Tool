@@ -1,42 +1,43 @@
 <?xml version='1.0' encoding='utf-8' ?>
 
-<!-- build 10200.17.0216.1925                               -->
-<workbook source-build='10.2.0 (10200.17.0216.1925)' source-platform='mac' version='10.2' xmlns:user='http://www.tableausoftware.com/xml/user'>
+<!-- build 10200.17.0614.1936                               -->
+<workbook source-build='10.2.3 (10200.17.0614.1936)' source-platform='mac' version='10.2' xmlns:user='http://www.tableausoftware.com/xml/user'>
   <preferences>
     <preference name='ui.encoding.shelf.height' value='24' />
     <preference name='ui.shelf.height' value='26' />
   </preferences>
   <datasources>
-    <datasource caption='2012 Raw Data' inline='true' name='federated.0i1n2u603bpxyf1bo56co10ugpwp' version='10.2'>
+    <datasource caption='2016 Raw Data' inline='true' name='federated.0ncx7x80neoxbl185usg30uzjgci' version='10.2'>
       <connection class='federated'>
         <named-connections>
-          <named-connection caption='2012 Raw Data' name='textscan.0p65v8q1889wk01dk4llv0fwiqbf'>
-            <connection class='textscan' directory='/Users/ThomasLee/Dropbox/Fantasy Football' filename='2012 Raw Data.txt' password='' server='' />
+          <named-connection caption='2016 Raw Data' name='textscan.1xjqlqj1gfq18c1c7yv5s0foz1rv'>
+            <connection class='textscan' directory='/Users/ThomasLee/Dropbox/Fantasy Football/Data' filename='2016 Raw Data.txt' password='' server='' />
           </named-connection>
         </named-connections>
-        <relation connection='textscan.0p65v8q1889wk01dk4llv0fwiqbf' name='2012 Raw Data.txt' table='[2012 Raw Data#txt]' type='table'>
+        <relation connection='textscan.1xjqlqj1gfq18c1c7yv5s0foz1rv' name='2016 Raw Data.txt' table='[2016 Raw Data#txt]' type='table'>
           <columns character-set='UTF-8' header='yes' locale='en_US' separator=','>
             <column datatype='integer' name='Rank' ordinal='0' />
             <column datatype='string' name='Name' ordinal='1' />
-            <column datatype='string' name='Tm' ordinal='2' />
-            <column datatype='string' name='FantPos' ordinal='3' />
+            <column datatype='string' name='Team' ordinal='2' />
+            <column datatype='string' name='Pos' ordinal='3' />
             <column datatype='integer' name='Age' ordinal='4' />
             <column datatype='integer' name='G' ordinal='5' />
             <column datatype='integer' name='GS' ordinal='6' />
             <column datatype='integer' name='Cmp' ordinal='7' />
-            <column datatype='integer' name='Att' ordinal='8' />
-            <column datatype='integer' name='Yds' ordinal='9' />
-            <column datatype='integer' name='TD' ordinal='10' />
+            <column datatype='integer' name='PAtt' ordinal='8' />
+            <column datatype='integer' name='PYds' ordinal='9' />
+            <column datatype='integer' name='PTD' ordinal='10' />
             <column datatype='integer' name='Int' ordinal='11' />
-            <column datatype='integer' name='Att 1' ordinal='12' />
-            <column datatype='integer' name='Yds 1' ordinal='13' />
-            <column datatype='real' name='Y/A' ordinal='14' />
-            <column datatype='integer' name='TD 1' ordinal='15' />
+            <column datatype='integer' name='RuAtt' ordinal='12' />
+            <column datatype='integer' name='RuYds' ordinal='13' />
+            <column datatype='real' name='RuYA' ordinal='14' />
+            <column datatype='integer' name='TD' ordinal='15' />
             <column datatype='integer' name='Tgt' ordinal='16' />
             <column datatype='integer' name='Rec' ordinal='17' />
-            <column datatype='integer' name='Yds 2' ordinal='18' />
-            <column datatype='integer' name='TD 2' ordinal='19' />
-            <column datatype='integer' name='FantPt' ordinal='20' />
+            <column datatype='integer' name='ReYds' ordinal='18' />
+            <column datatype='real' name='ReYR' ordinal='19' />
+            <column datatype='integer' name='TD 1' ordinal='20' />
+            <column datatype='integer' name='FantPt' ordinal='21' />
           </columns>
         </relation>
         <metadata-records>
@@ -44,7 +45,7 @@
             <remote-name>Rank</remote-name>
             <remote-type>20</remote-type>
             <local-name>[Rank]</local-name>
-            <parent-name>[2012 Raw Data.txt]</parent-name>
+            <parent-name>[2016 Raw Data.txt]</parent-name>
             <remote-alias>Rank</remote-alias>
             <ordinal>0</ordinal>
             <local-type>integer</local-type>
@@ -59,7 +60,7 @@
             <remote-name>Name</remote-name>
             <remote-type>129</remote-type>
             <local-name>[Name]</local-name>
-            <parent-name>[2012 Raw Data.txt]</parent-name>
+            <parent-name>[2016 Raw Data.txt]</parent-name>
             <remote-alias>Name</remote-alias>
             <ordinal>1</ordinal>
             <local-type>string</local-type>
@@ -77,11 +78,11 @@
             </attributes>
           </metadata-record>
           <metadata-record class='column'>
-            <remote-name>Tm</remote-name>
+            <remote-name>Team</remote-name>
             <remote-type>129</remote-type>
-            <local-name>[Tm]</local-name>
-            <parent-name>[2012 Raw Data.txt]</parent-name>
-            <remote-alias>Tm</remote-alias>
+            <local-name>[Team]</local-name>
+            <parent-name>[2016 Raw Data.txt]</parent-name>
+            <remote-alias>Team</remote-alias>
             <ordinal>2</ordinal>
             <local-type>string</local-type>
             <aggregation>Count</aggregation>
@@ -98,11 +99,11 @@
             </attributes>
           </metadata-record>
           <metadata-record class='column'>
-            <remote-name>FantPos</remote-name>
+            <remote-name>Pos</remote-name>
             <remote-type>129</remote-type>
-            <local-name>[FantPos]</local-name>
-            <parent-name>[2012 Raw Data.txt]</parent-name>
-            <remote-alias>FantPos</remote-alias>
+            <local-name>[Pos]</local-name>
+            <parent-name>[2016 Raw Data.txt]</parent-name>
+            <remote-alias>Pos</remote-alias>
             <ordinal>3</ordinal>
             <local-type>string</local-type>
             <aggregation>Count</aggregation>
@@ -122,7 +123,7 @@
             <remote-name>Age</remote-name>
             <remote-type>20</remote-type>
             <local-name>[Age]</local-name>
-            <parent-name>[2012 Raw Data.txt]</parent-name>
+            <parent-name>[2016 Raw Data.txt]</parent-name>
             <remote-alias>Age</remote-alias>
             <ordinal>4</ordinal>
             <local-type>integer</local-type>
@@ -137,7 +138,7 @@
             <remote-name>G</remote-name>
             <remote-type>20</remote-type>
             <local-name>[G]</local-name>
-            <parent-name>[2012 Raw Data.txt]</parent-name>
+            <parent-name>[2016 Raw Data.txt]</parent-name>
             <remote-alias>G</remote-alias>
             <ordinal>5</ordinal>
             <local-type>integer</local-type>
@@ -152,7 +153,7 @@
             <remote-name>GS</remote-name>
             <remote-type>20</remote-type>
             <local-name>[GS]</local-name>
-            <parent-name>[2012 Raw Data.txt]</parent-name>
+            <parent-name>[2016 Raw Data.txt]</parent-name>
             <remote-alias>GS</remote-alias>
             <ordinal>6</ordinal>
             <local-type>integer</local-type>
@@ -167,7 +168,7 @@
             <remote-name>Cmp</remote-name>
             <remote-type>20</remote-type>
             <local-name>[Cmp]</local-name>
-            <parent-name>[2012 Raw Data.txt]</parent-name>
+            <parent-name>[2016 Raw Data.txt]</parent-name>
             <remote-alias>Cmp</remote-alias>
             <ordinal>7</ordinal>
             <local-type>integer</local-type>
@@ -179,11 +180,11 @@
             </attributes>
           </metadata-record>
           <metadata-record class='column'>
-            <remote-name>Att</remote-name>
+            <remote-name>PAtt</remote-name>
             <remote-type>20</remote-type>
-            <local-name>[Att]</local-name>
-            <parent-name>[2012 Raw Data.txt]</parent-name>
-            <remote-alias>Att</remote-alias>
+            <local-name>[PAtt]</local-name>
+            <parent-name>[2016 Raw Data.txt]</parent-name>
+            <remote-alias>PAtt</remote-alias>
             <ordinal>8</ordinal>
             <local-type>integer</local-type>
             <aggregation>Sum</aggregation>
@@ -194,11 +195,11 @@
             </attributes>
           </metadata-record>
           <metadata-record class='column'>
-            <remote-name>Yds</remote-name>
+            <remote-name>PYds</remote-name>
             <remote-type>20</remote-type>
-            <local-name>[Yds]</local-name>
-            <parent-name>[2012 Raw Data.txt]</parent-name>
-            <remote-alias>Yds</remote-alias>
+            <local-name>[PYds]</local-name>
+            <parent-name>[2016 Raw Data.txt]</parent-name>
+            <remote-alias>PYds</remote-alias>
             <ordinal>9</ordinal>
             <local-type>integer</local-type>
             <aggregation>Sum</aggregation>
@@ -209,11 +210,11 @@
             </attributes>
           </metadata-record>
           <metadata-record class='column'>
-            <remote-name>TD</remote-name>
+            <remote-name>PTD</remote-name>
             <remote-type>20</remote-type>
-            <local-name>[TD]</local-name>
-            <parent-name>[2012 Raw Data.txt]</parent-name>
-            <remote-alias>TD</remote-alias>
+            <local-name>[PTD]</local-name>
+            <parent-name>[2016 Raw Data.txt]</parent-name>
+            <remote-alias>PTD</remote-alias>
             <ordinal>10</ordinal>
             <local-type>integer</local-type>
             <aggregation>Sum</aggregation>
@@ -227,7 +228,7 @@
             <remote-name>Int</remote-name>
             <remote-type>20</remote-type>
             <local-name>[Int]</local-name>
-            <parent-name>[2012 Raw Data.txt]</parent-name>
+            <parent-name>[2016 Raw Data.txt]</parent-name>
             <remote-alias>Int</remote-alias>
             <ordinal>11</ordinal>
             <local-type>integer</local-type>
@@ -239,11 +240,11 @@
             </attributes>
           </metadata-record>
           <metadata-record class='column'>
-            <remote-name>Att 1</remote-name>
+            <remote-name>RuAtt</remote-name>
             <remote-type>20</remote-type>
-            <local-name>[Att 1]</local-name>
-            <parent-name>[2012 Raw Data.txt]</parent-name>
-            <remote-alias>Att 1</remote-alias>
+            <local-name>[RuAtt]</local-name>
+            <parent-name>[2016 Raw Data.txt]</parent-name>
+            <remote-alias>RuAtt</remote-alias>
             <ordinal>12</ordinal>
             <local-type>integer</local-type>
             <aggregation>Sum</aggregation>
@@ -254,11 +255,11 @@
             </attributes>
           </metadata-record>
           <metadata-record class='column'>
-            <remote-name>Yds 1</remote-name>
+            <remote-name>RuYds</remote-name>
             <remote-type>20</remote-type>
-            <local-name>[Yds 1]</local-name>
-            <parent-name>[2012 Raw Data.txt]</parent-name>
-            <remote-alias>Yds 1</remote-alias>
+            <local-name>[RuYds]</local-name>
+            <parent-name>[2016 Raw Data.txt]</parent-name>
+            <remote-alias>RuYds</remote-alias>
             <ordinal>13</ordinal>
             <local-type>integer</local-type>
             <aggregation>Sum</aggregation>
@@ -269,11 +270,11 @@
             </attributes>
           </metadata-record>
           <metadata-record class='column'>
-            <remote-name>Y/A</remote-name>
+            <remote-name>RuYA</remote-name>
             <remote-type>5</remote-type>
-            <local-name>[Y/A]</local-name>
-            <parent-name>[2012 Raw Data.txt]</parent-name>
-            <remote-alias>Y/A</remote-alias>
+            <local-name>[RuYA]</local-name>
+            <parent-name>[2016 Raw Data.txt]</parent-name>
+            <remote-alias>RuYA</remote-alias>
             <ordinal>14</ordinal>
             <local-type>real</local-type>
             <aggregation>Sum</aggregation>
@@ -284,11 +285,11 @@
             </attributes>
           </metadata-record>
           <metadata-record class='column'>
-            <remote-name>TD 1</remote-name>
+            <remote-name>TD</remote-name>
             <remote-type>20</remote-type>
-            <local-name>[TD 1]</local-name>
-            <parent-name>[2012 Raw Data.txt]</parent-name>
-            <remote-alias>TD 1</remote-alias>
+            <local-name>[TD]</local-name>
+            <parent-name>[2016 Raw Data.txt]</parent-name>
+            <remote-alias>TD</remote-alias>
             <ordinal>15</ordinal>
             <local-type>integer</local-type>
             <aggregation>Sum</aggregation>
@@ -302,7 +303,7 @@
             <remote-name>Tgt</remote-name>
             <remote-type>20</remote-type>
             <local-name>[Tgt]</local-name>
-            <parent-name>[2012 Raw Data.txt]</parent-name>
+            <parent-name>[2016 Raw Data.txt]</parent-name>
             <remote-alias>Tgt</remote-alias>
             <ordinal>16</ordinal>
             <local-type>integer</local-type>
@@ -317,7 +318,7 @@
             <remote-name>Rec</remote-name>
             <remote-type>20</remote-type>
             <local-name>[Rec]</local-name>
-            <parent-name>[2012 Raw Data.txt]</parent-name>
+            <parent-name>[2016 Raw Data.txt]</parent-name>
             <remote-alias>Rec</remote-alias>
             <ordinal>17</ordinal>
             <local-type>integer</local-type>
@@ -329,11 +330,11 @@
             </attributes>
           </metadata-record>
           <metadata-record class='column'>
-            <remote-name>Yds 2</remote-name>
+            <remote-name>ReYds</remote-name>
             <remote-type>20</remote-type>
-            <local-name>[Yds 2]</local-name>
-            <parent-name>[2012 Raw Data.txt]</parent-name>
-            <remote-alias>Yds 2</remote-alias>
+            <local-name>[ReYds]</local-name>
+            <parent-name>[2016 Raw Data.txt]</parent-name>
+            <remote-alias>ReYds</remote-alias>
             <ordinal>18</ordinal>
             <local-type>integer</local-type>
             <aggregation>Sum</aggregation>
@@ -344,12 +345,27 @@
             </attributes>
           </metadata-record>
           <metadata-record class='column'>
-            <remote-name>TD 2</remote-name>
-            <remote-type>20</remote-type>
-            <local-name>[TD 2]</local-name>
-            <parent-name>[2012 Raw Data.txt]</parent-name>
-            <remote-alias>TD 2</remote-alias>
+            <remote-name>ReYR</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[ReYR]</local-name>
+            <parent-name>[2016 Raw Data.txt]</parent-name>
+            <remote-alias>ReYR</remote-alias>
             <ordinal>19</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='integer' name='DebugRemoteMetadata (size)'>8</attribute>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;double&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>TD 1</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[TD 1]</local-name>
+            <parent-name>[2016 Raw Data.txt]</parent-name>
+            <remote-alias>TD 1</remote-alias>
+            <ordinal>20</ordinal>
             <local-type>integer</local-type>
             <aggregation>Sum</aggregation>
             <contains-null>true</contains-null>
@@ -362,9 +378,9 @@
             <remote-name>FantPt</remote-name>
             <remote-type>20</remote-type>
             <local-name>[FantPt]</local-name>
-            <parent-name>[2012 Raw Data.txt]</parent-name>
+            <parent-name>[2016 Raw Data.txt]</parent-name>
             <remote-alias>FantPt</remote-alias>
-            <ordinal>20</ordinal>
+            <ordinal>21</ordinal>
             <local-type>integer</local-type>
             <aggregation>Sum</aggregation>
             <contains-null>true</contains-null>
@@ -376,7 +392,7 @@
           <metadata-record class='capability'>
             <remote-name />
             <remote-type>0</remote-type>
-            <parent-name>[2012 Raw Data.txt]</parent-name>
+            <parent-name>[2016 Raw Data.txt]</parent-name>
             <remote-alias />
             <aggregation>Count</aggregation>
             <contains-null>true</contains-null>
@@ -392,22 +408,21 @@
         </metadata-records>
       </connection>
       <aliases enabled='yes' />
-      <column caption='RuAtt' datatype='integer' name='[Att 1]' role='measure' type='quantitative' />
-      <column caption='PAtt' datatype='integer' name='[Att]' role='measure' type='quantitative' />
-      <column caption='Pos' datatype='string' name='[FantPos]' role='dimension' type='nominal' />
-      <column caption='FantPt' datatype='integer' name='[FantPt]' role='measure' type='quantitative' />
+      <column caption='PCmp' datatype='integer' name='[Cmp]' role='measure' type='quantitative' />
+      <column caption='Fant Pt' datatype='integer' name='[FantPt]' role='measure' type='quantitative' />
       <column datatype='integer' name='[Number of Records]' role='measure' type='quantitative' user:auto-column='numrec'>
         <calculation class='tableau' formula='1' />
       </column>
-      <column caption='RuTD' datatype='integer' name='[TD 1]' role='measure' type='quantitative' />
-      <column caption='ReTD' datatype='integer' name='[TD 2]' role='measure' type='quantitative' />
-      <column caption='PTD' datatype='integer' name='[TD]' role='measure' type='quantitative' />
-      <column caption='Team' datatype='string' name='[Tm]' role='dimension' type='nominal' />
-      <column caption='RuYPA' datatype='real' name='[Y/A]' role='measure' type='quantitative' />
-      <column caption='RuYds' datatype='integer' name='[Yds 1]' role='measure' type='quantitative' />
-      <column caption='ReYds' datatype='integer' name='[Yds 2]' role='measure' type='quantitative' />
-      <column caption='PYds' datatype='integer' name='[Yds]' role='measure' type='quantitative' />
-      <layout dim-ordering='alphabetic' dim-percentage='0.194192' measure-ordering='alphabetic' measure-percentage='0.805808' show-structure='true' />
+      <column caption='PAtt' datatype='integer' name='[PAtt]' role='measure' type='quantitative' />
+      <column caption='PYds' datatype='integer' name='[PYds]' role='measure' type='quantitative' />
+      <column caption='ReYPR' datatype='real' hidden='true' name='[ReYR]' role='dimension' type='quantitative' />
+      <column caption='ReYds' datatype='integer' name='[ReYds]' role='measure' type='quantitative' />
+      <column caption='RuAtt' datatype='integer' name='[RuAtt]' role='measure' type='quantitative' />
+      <column caption='RuYPA' datatype='real' name='[RuYA]' role='measure' type='quantitative' />
+      <column caption='RuYds' datatype='integer' name='[RuYds]' role='measure' type='quantitative' />
+      <column caption='ReTD' datatype='integer' name='[TD 1]' role='measure' type='quantitative' />
+      <column caption='RuTD' datatype='integer' name='[TD]' role='measure' type='quantitative' />
+      <layout dim-ordering='alphabetic' dim-percentage='0.214156' measure-ordering='alphabetic' measure-percentage='0.785844' show-structure='true' />
       <semantic-values>
         <semantic-value key='[Country].[Name]' value='&quot;United States&quot;' />
       </semantic-values>
