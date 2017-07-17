@@ -64,3 +64,40 @@ function partitionByPosition () {
         }
     })
 }
+
+function findMean(position) {
+    if (position == "QB") {
+        var sum = 0;
+        var num = 0;
+        qbPlayerNames.forEach(function (player) {
+           yearList = Object.keys(dataByPlayers[player]);
+           yearList.forEach(function (year) {
+               sum += parseInt(dataByPlayers[player][year]["Fant Pt"]);
+               num += 1;
+           });
+        });
+        qbMean = sum / num;
+    } else if (position == "RB") {
+        var sum = 0;
+        var num = 0;
+        rbPlayerNames.forEach(function (player) {
+            yearList = Object.keys(dataByPlayers[player]);
+            yearList.forEach(function (year) {
+                sum += parseInt(dataByPlayers[player][year]["Fant Pt"]);
+                num += 1;
+            });
+        });
+        rbMean = sum / num;
+    } else if (position == "WR") {
+        var sum = 0;
+        var num = 0;
+        wrPlayerNames.forEach(function (player) {
+            yearList = Object.keys(dataByPlayers[player]);
+            yearList.forEach(function (year) {
+                sum += parseInt(dataByPlayers[player][year]["Fant Pt"]);
+                num += 1;
+            });
+        });
+        wrMean = sum / num;
+    }
+}

@@ -6,6 +6,9 @@ playerNameList = [];
 qbPlayerNames = [];
 rbPlayerNames = [];
 wrPlayerNames = [];
+qbMean = 0;
+rbMean = 0;
+wrMean = 0;
 
 for (var y = 2012; y < 2017; y++) {
     processDataByYear("Data/" + y + "ReadyData.csv", y);
@@ -18,12 +21,11 @@ d3.csv("Data/2012ReadyData.csv", function (error2012, data2012) {
                 d3.csv("Data/2016ReadyData.csv", function (error2016, data2016) {
 //======================================================================================================================
                     eliminateIrrelevantPlayers();
-                    console.log(dataByPlayers);
                     partitionByPosition();
-                    console.log("QBs: " + qbPlayerNames);
-                    console.log("RBs: " + rbPlayerNames);
-                    console.log("WRs: " + wrPlayerNames);
-
+                    findMean("QB");
+                    findMean("RB");
+                    findMean("WR");
+                    console.log("QB: " + qbMean + " RB: " + rbMean + " WR: " + wrMean);
 
 
 
