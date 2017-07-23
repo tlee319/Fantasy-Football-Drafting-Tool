@@ -51,6 +51,10 @@ d3.csv("Data/QBDataSetFinal.csv", function (errorQB, dataQB) {
             calculateZ("WR");
             calculateZ("RB");
 
+            calculatePercentile("QB");
+            calculatePercentile("WR");
+            calculatePercentile("RB");
+
             console.log(dataByPlayers);
             console.log("QBmean: " + qbMeanWeekly + " RBmean: " + rbMeanWeekly + " WRmean: " + wrMeanWeekly);
             console.log("QBmean: " + qbMeanWeeklyPPR + " RBmean: " + rbMeanWeeklyPPR + " WRmean: " + wrMeanWeeklyPPR);

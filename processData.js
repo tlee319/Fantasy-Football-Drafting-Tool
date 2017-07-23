@@ -424,46 +424,205 @@ function calculateSD(position) {
     }
 }
 
-function getPercentage (zScore, player, season, week, type) {
+function calculatePercentile (position) {
     d3.csv("Data/ZScoreTableSetFinal.csv", function(error, data) {
-        var roundedZScore100;
-        var roundedZScore10;
-        var positive = false;
+        if (position == "QB") {
 
-        if (zScore == 0) {
-            console.log("Player: " + player + ", season: " + season + ", week: " + week + ", percentile: " + 0.5);
-            dataByPlayers[player][season][week]["percentile"] = .50;
-        } else {
-            if (zScore < 0) {
-                roundedZScore100 = parseFloat(zScore.toString().substr(0, 5));
-                roundedZScore10 = parseFloat(zScore.toString().substr(0, 4));
-            } else if (zScore > 0) {
-                roundedZScore100 = parseFloat(zScore.toString().substr(0, 4));
-                roundedZScore10 = parseFloat(zScore.toString().substr(0, 3));
-                roundedZScore10 = -roundedZScore10;
-                positive = true;
-            }
+        } else if (position == "WR") {
+            wrPlayerNames.forEach(function (player) {
+                var seasonList = Object.keys(dataByPlayers[player]);
+                seasonList.forEach(function (season) {
+                    var weekList = Object.keys(dataByPlayers[player][season]);
+                    weekList.forEach(function (week) {
+                        var roundedZScore100;
+                        var roundedZScore10;
+                        var positive = false;
+                        var zScore = dataByPlayers[player][season][week]["z"]
 
-            var subZ = Math.abs(roundedZScore100 - roundedZScore10);
-            subZ = parseFloat(subZ.toString().substr(0, 4));
-
-            try {
-                data.forEach(function (d) {
-                    if (parseFloat(d["Z"]) == roundedZScore10) {
-                        index = "Z" + subZ;
-                        percentile = d[index];
-                        if (positive) {
-                            dataByPlayers[player][season][week]["percentile"] = (1.0 - parseFloat(percentile));
-                            throw BreakException;
+                        if (zScore == 0) {
+                            dataByPlayers[player][season][week]["percentile"] = 0.5;
+                        } else if (zScore > 4.0) {
+                            dataByPlayers[player][season][week]["percentile"] = 0.99999;
+                        } else if (zScore < -4.0 ) {
+                            dataByPlayers[player][season][week]["percentile"] = 0.00001;
                         } else {
-                            dataByPlayers[player][season][week]["percentile"] = parseFloat(percentile);
-                            throw BreakException;
-                        }
-                    }
-                });
-            } catch (e) {
+                            var subZ;
+                            if (zScore < 0) {
+                                roundedZScore100 = parseFloat(zScore.toString().substr(0, 5));
+                                roundedZScore10 = parseFloat(zScore.toString().substr(0, 4));
+                                subZ = Math.abs(roundedZScore100 - roundedZScore10);
+                            } else if (zScore > 0) {
+                                roundedZScore100 = parseFloat(zScore.toString().substr(0, 4));
+                                roundedZScore10 = parseFloat(zScore.toString().substr(0, 3));
+                                subZ = Math.abs(roundedZScore100 - roundedZScore10);
+                                roundedZScore10 = -roundedZScore10;
+                                positive = true;
+                            }
+                            subZ = parseFloat(subZ.toString().substr(0, 4));
+                            //console.log("Attempt");
+                            try {
+                                data.forEach(function (d) {
+                                    if (parseFloat(d["Z"]) == roundedZScore10) {
+                                        index = "Z" + subZ;
+                                        percentile = d[index];
+                                        if (positive) {
+                                            dataByPlayers[player][season][week]["percentile"] = 1.0 - parseFloat(percentile);
+                                            throw BreakException;
+                                        } else {
+                                            //console.log("Success");
+                                            dataByPlayers[player][season][week]["percentile"] = parseFloat(percentile);
+                                            throw BreakException;
+                                        }
+                                    }
+                                });
+                            } catch (e) {
 
-            }
+                            }
+                        }
+
+                        var roundedZScore100PPR;
+                        var roundedZScore10PPR;
+                        var positivePPR = false;
+                        var zScorePPR = dataByPlayers[player][season][week]["zPPR"];
+
+                        if (zScorePPR == 0) {
+                            dataByPlayers[player][season][week]["percentilePPR"] = 0.5;
+                        } else if (zScorePPR > 4.0) {
+                            dataByPlayers[player][season][week]["percentilePPR"] = 0.99999;
+                        } else if (zScorePPR < -4.0 ) {
+                            dataByPlayers[player][season][week]["percentilePPR"] = 0.00001;
+                        } else {
+                            var subZPPR;
+                            if (zScorePPR < 0) {
+                                roundedZScore100PPR = parseFloat(zScorePPR.toString().substr(0, 5));
+                                roundedZScore10PPR = parseFloat(zScorePPR.toString().substr(0, 4));
+                                subZPPR = Math.abs(roundedZScore100PPR - roundedZScore10PPR);
+                            } else if (zScorePPR > 0) {
+                                roundedZScore100PPR = parseFloat(zScorePPR.toString().substr(0, 4));
+                                roundedZScore10PPR = parseFloat(zScorePPR.toString().substr(0, 3));
+                                subZPPR = Math.abs(roundedZScore100PPR - roundedZScore10PPR);
+                                roundedZScore10PPR = -roundedZScore10PPR;
+                                positivePPR = true;
+                            }
+                            subZPPR = parseFloat(subZPPR.toString().substr(0, 4));
+                            try {
+                                data.forEach(function (d) {
+                                    if (parseFloat(d["Z"]) == roundedZScore10PPR) {
+                                        index = "Z" + subZPPR;
+                                        percentile = d[index];
+                                        if (positivePPR) {
+                                            dataByPlayers[player][season][week]["percentilePPR"] = parseFloat(1.0 - parseFloat(percentile));
+                                            throw BreakException;
+                                        } else {
+                                            dataByPlayers[player][season][week]["percentilePPR"] = parseFloat(percentile);
+                                            throw BreakException;
+                                        }
+                                    }
+                                });
+                            } catch (e) {
+
+                            }
+                        }
+                    });
+                });
+            });
+        } else if (position == "RB") {
+            rbPlayerNames.forEach(function (player) {
+                var seasonList = Object.keys(dataByPlayers[player]);
+                seasonList.forEach(function (season) {
+                    var weekList = Object.keys(dataByPlayers[player][season]);
+                    weekList.forEach(function (week) {
+                        var roundedZScore100;
+                        var roundedZScore10;
+                        var positive = false;
+                        var zScore = dataByPlayers[player][season][week]["z"]
+                        if (zScore == 0) {
+                            dataByPlayers[player][season][week]["percentile"] = 0.5;
+                        } else if (zScore > 4.0) {
+                            dataByPlayers[player][season][week]["percentile"] = 0.99999;
+                        } else if (zScore < -4.0 ) {
+                            dataByPlayers[player][season][week]["percentile"] = 0.00001;
+                        } else {
+                            var subZ;
+                            if (zScore < 0) {
+                                roundedZScore100 = parseFloat(zScore.toString().substr(0, 5));
+                                roundedZScore10 = parseFloat(zScore.toString().substr(0, 4));
+                                subZ = Math.abs(roundedZScore100 - roundedZScore10);
+                            } else if (zScore > 0) {
+                                roundedZScore100 = parseFloat(zScore.toString().substr(0, 4));
+                                roundedZScore10 = parseFloat(zScore.toString().substr(0, 3));
+                                subZ = Math.abs(roundedZScore100 - roundedZScore10);
+                                roundedZScore10 = -roundedZScore10;
+                                positive = true;
+                            }
+                            subZ = parseFloat(subZ.toString().substr(0, 4));
+                            //console.log("Attempt");
+                            try {
+                                data.forEach(function (d) {
+                                    if (parseFloat(d["Z"]) == roundedZScore10) {
+                                        index = "Z" + subZ;
+                                        percentile = d[index];
+                                        if (positive) {
+                                            dataByPlayers[player][season][week]["percentile"] = parseFloat(1.0 - parseFloat(percentile));
+                                            throw BreakException;
+                                        } else {
+                                            //console.log("Success");
+                                            dataByPlayers[player][season][week]["percentile"] = parseFloat(percentile);
+                                            throw BreakException;
+                                        }
+                                    }
+                                });
+                            } catch (e) {
+
+                            }
+                        }
+
+                        var roundedZScore100PPR;
+                        var roundedZScore10PPR;
+                        var positivePPR = false;
+                        var zScorePPR = dataByPlayers[player][season][week]["zPPR"];
+
+                        if (zScorePPR == 0) {
+                            dataByPlayers[player][season][week]["percentilePPR"] = 0.5;
+                        } else if (zScorePPR > 4.0) {
+                            dataByPlayers[player][season][week]["percentilePPR"] = 0.99999;
+                        } else if (zScorePPR < -4.0 ) {
+                            dataByPlayers[player][season][week]["percentilePPR"] = 0.00001;
+                        } else {
+                            var subZPPR;
+                            if (zScorePPR < 0) {
+                                roundedZScore100PPR = parseFloat(zScorePPR.toString().substr(0, 5));
+                                roundedZScore10PPR = parseFloat(zScorePPR.toString().substr(0, 4));
+                                subZPPR = Math.abs(roundedZScore100PPR - roundedZScore10PPR);
+                            } else if (zScorePPR > 0) {
+                                roundedZScore100PPR = parseFloat(zScorePPR.toString().substr(0, 4));
+                                roundedZScore10PPR = parseFloat(zScorePPR.toString().substr(0, 3));
+                                subZPPR = Math.abs(roundedZScore100PPR - roundedZScore10PPR);
+                                roundedZScore10PPR = -roundedZScore10PPR;
+                                positivePPR = true;
+                            }
+                            subZPPR = parseFloat(subZPPR.toString().substr(0, 4));
+                            try {
+                                data.forEach(function (d) {
+                                    if (parseFloat(d["Z"]) == roundedZScore10PPR) {
+                                        index = "Z" + subZPPR;
+                                        percentile = d[index];
+                                        if (positivePPR) {
+                                            dataByPlayers[player][season][week]["percentilePPR"] = parseFloat(1.0 - parseFloat(percentile));
+                                            throw BreakException;
+                                        } else {
+                                            dataByPlayers[player][season][week]["percentilePPR"] = parseFloat(percentile);
+                                            throw BreakException;
+                                        }
+                                    }
+                                });
+                            } catch (e) {
+
+                            }
+                        }
+                    });
+                });
+            });
         }
     });
 }
@@ -479,8 +638,12 @@ function calculateZ(position) {
                     var xPPR = dataByPlayers[player][season][week]["ptsPPR"];
 
                     var z = ((x - qbMeanWeekly) / qbSDWeekly);
+                    dataByPlayers[player][season][week]["z"] = z;
+
+                    var zPPR = ((xPPR - qbMeanWeeklyPPR) / qbSDWeeklyPPR);
+                    dataByPlayers[player][season][week]["zPPR"] = zPPR;
                     //console.log((xPPR - qbMeanWeeklyPPR) / qbSDWeeklyPPR);
-                    getPercentage(z, player, season, week, "pts");
+                    //calculatePercentile(z, player, season, week, "pts");
                 });
             });
         });
@@ -498,8 +661,12 @@ function calculateZ(position) {
 
                     //console.log("WR");
                     var z = ((x - wrMeanWeekly) / wrSDWeekly);
+                    dataByPlayers[player][season][week]["z"] = z;
+
+                    var zPPR = ((xPPR - wrMeanWeeklyPPR) / wrSDWeeklyPPR);
+                    dataByPlayers[player][season][week]["zPPR"] = zPPR;
                     //console.log((xPPR - wrMeanWeeklyPPR) / wrSDWeeklyPPR);
-                    //getPercentage(z, player, season, week, "pts");
+                    //calculatePercentile(z, player, season, week, "pts");
                 });
             });
         });
@@ -516,8 +683,12 @@ function calculateZ(position) {
                     var xPPR = dataByPlayers[player][season][week]["ptsPPR"];
                     //console.log("RB");
                     var z = ((x - rbMeanWeekly) / rbSDWeekly);
+                    dataByPlayers[player][season][week]["z"] = z;
+
+                    var zPPR = ((xPPR - rbMeanWeeklyPPR) / rbSDWeeklyPPR);
+                    dataByPlayers[player][season][week]["zPPR"] = zPPR;
                     //console.log((xPPR - rbMeanWeeklyPPR) / rbSDWeeklyPPR);
-                    //getPercentage(z, player, season, week, "pts");
+                    //calculatePercentile(z, player, season, week, "pts");
                 });
             });
         });
