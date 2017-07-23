@@ -6,32 +6,57 @@ playerNameList = [];
 qbPlayerNames = [];
 rbPlayerNames = [];
 wrPlayerNames = [];
-qbMean = 0;
-rbMean = 0;
-wrMean = 0;
 
-for (var y = 2012; y < 2017; y++) {
-    processDataByYear("Data/" + y + "ReadyData.csv", y);
-}
+qbMeanWeekly = 0;
+rbMeanWeekly = 0;
+wrMeanWeekly = 0;
+qbMeanWeeklyPPR = 0;
+rbMeanWeeklyPPR = 0;
+wrMeanWeeklyPPR = 0;
 
-d3.csv("Data/2012ReadyData.csv", function (error2012, data2012) {
-    d3.csv("Data/2013ReadyData.csv", function (error2013, data2013) {
-        d3.csv("Data/2014ReadyData.csv", function (error2014, data2014) {
-            d3.csv("Data/2015ReadyData.csv", function (error2015, data2015) {
-                d3.csv("Data/2016ReadyData.csv", function (error2016, data2016) {
+qbSDWeekly = 0;
+qbSDWeeklyPPR = 0;
+rbSDWeekly = 0;
+rbSDWeeklyPPR = 0;
+wrSDWeekly = 0;
+wrSDWeeklyPPR = 0;
+
+processData("Data/QBDataSetFinal.csv", "QB");
+processData("Data/WRDataSetFinal.csv", "WR");
+processData("Data/RBDataSetFinal.csv", "RB");
+
+
+d3.csv("Data/QBDataSetFinal.csv", function (errorQB, dataQB) {
+    d3.csv("Data/WRDataSetFinal.csv", function (errorWR, dataWR) {
+        d3.csv("Data/RBDataSetFinal.csv", function (errorRB, dataRB) {
 //======================================================================================================================
-                    eliminateIrrelevantPlayers();
-                    partitionByPosition();
-                    findMean("QB");
-                    findMean("RB");
-                    findMean("WR");
-                    console.log("QB: " + qbMean + " RB: " + rbMean + " WR: " + wrMean);
+            partitionByPosition();
+            calcualteFantasyPoints("QB", "nonePPR");
+            calcualteFantasyPoints("WR", "nonePPR");
+            calcualteFantasyPoints("RB", "nonePPR");
 
+            calcualteFantasyPoints("QB", "PPR");
+            calcualteFantasyPoints("WR", "PPR");
+            calcualteFantasyPoints("RB", "PPR");
 
+            findMeanWeekly("QB");
+            findMeanWeekly("RB");
+            findMeanWeekly("WR");
 
+            calculateSD("QB");
+            calculateSD("WR");
+            calculateSD("RB");
+
+            calculateZ("QB");
+            calculateZ("WR");
+            calculateZ("RB");
+
+            console.log(dataByPlayers);
+            console.log("QBmean: " + qbMeanWeekly + " RBmean: " + rbMeanWeekly + " WRmean: " + wrMeanWeekly);
+            console.log("QBmean: " + qbMeanWeeklyPPR + " RBmean: " + rbMeanWeeklyPPR + " WRmean: " + wrMeanWeeklyPPR);
+            console.log("QBsd: " + qbSDWeekly + " RBsd: " + rbSDWeekly + " WRsd: " + wrSDWeekly);
+            console.log("QBsd: " + qbSDWeeklyPPR + " RBsd: " + rbSDWeeklyPPR + " WRsd: " + wrSDWeeklyPPR);
 //======================================================================================================================
-                });
-            });
         });
     });
 });
