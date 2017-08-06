@@ -4,6 +4,51 @@
 <head>
     <title>FF Drafting Tool</title>
 </head>
+<style>
+    body {
+        font: 11px sans-serif;
+    }
+    .axis path,
+    .axis line {
+        fill: none;
+        stroke: #000;
+        shape-rendering: crispEdges;
+    }
+    .dot {
+        stroke: #000;
+    }
+    .tooltip {
+        position: absolute;
+        width: 200px;
+        height: 28px;
+        pointer-events: none;
+    }
+    .line {
+        pointer-events: none;
+    }
+    .teamText{
+        pointer-events: none;
+    }
+    .background path {
+        fill: none;
+        stroke: #ddd;
+        shape-rendering: crispEdges;
+    }
+    .foreground path {
+        fill: none;
+        stroke: steelblue;
+        stroke-width: 2px;
+    }
+    #titletext {
+        font: Sans-serif;
+        text-align: center;
+    }
+    rect {
+        stroke-width: 3;
+    }
+
+</style>
+<svg width="700" height="10000"></svg>
 <body>
     <h1 id="titletext">Fantasy Football Drafting Tool</h1>
     <input type="radio" name="mousetype" value="pprNO" onclick="pprNO()" checked> Standard <br>
@@ -11,5 +56,6 @@
     <script type="text/javascript" src="http://d3js.org/d3.v4.min.js"></script>
     <script type="text/javascript" src="processData.js"></script>
     <script type="text/javascript" src="main.js"></script>
+    <script type="text/javascript" src="displayData.js"></script>
 </body>
 </html>

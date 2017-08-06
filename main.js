@@ -1,30 +1,41 @@
-// Got top 200 players from each year
-// If a player hasn't made top 200 in the past two years, then they are eliminated
+var dataByPlayers = {};
+var playerNameList = [];
+var qbPlayerNames = [];
+var rbPlayerNames = [];
+var wrPlayerNames = [];
 
-dataByPlayers = {};
-playerNameList = [];
-qbPlayerNames = [];
-rbPlayerNames = [];
-wrPlayerNames = [];
+var qbMeanWeekly = 0;
+var rbMeanWeekly = 0;
+var wrMeanWeekly = 0;
+var qbMeanWeeklyPPR = 0;
+var rbMeanWeeklyPPR = 0;
+var wrMeanWeeklyPPR = 0;
 
-qbMeanWeekly = 0;
-rbMeanWeekly = 0;
-wrMeanWeekly = 0;
-qbMeanWeeklyPPR = 0;
-rbMeanWeeklyPPR = 0;
-wrMeanWeeklyPPR = 0;
+var qbSDWeekly = 0;
+var qbSDWeeklyPPR = 0;
+var rbSDWeekly = 0;
+var rbSDWeeklyPPR = 0;
+var wrSDWeekly = 0;
+var wrSDWeeklyPPR = 0;
 
-qbSDWeekly = 0;
-qbSDWeeklyPPR = 0;
-rbSDWeekly = 0;
-rbSDWeeklyPPR = 0;
-wrSDWeekly = 0;
-wrSDWeeklyPPR = 0;
+var minNumberPlayerInfo = {};
+
+var qbVarianceMean = 0;
+var wrVarianceMean = 0;
+var rbVarianceMean = 0;
+var qbVarianceMeanPPR = 0;
+var wrVarianceMeanPPR = 0;
+var rbVarianceMeanPPR = 0;
+
+var qbConsistencySD = 0;
+var wrConsistencySD = 0;
+var rbConsistencySD = 0;
+
+var playerInfoList = [];
 
 processData("Data/QBDataSetFinal.csv", "QB");
 processData("Data/WRDataSetFinal.csv", "WR");
 processData("Data/RBDataSetFinal.csv", "RB");
-
 
 d3.csv("Data/QBDataSetFinal.csv", function (errorQB, dataQB) {
     d3.csv("Data/WRDataSetFinal.csv", function (errorWR, dataWR) {
@@ -43,23 +54,26 @@ d3.csv("Data/QBDataSetFinal.csv", function (errorQB, dataQB) {
             findMeanWeekly("RB");
             findMeanWeekly("WR");
 
-            calculateSD("QB");
-            calculateSD("WR");
-            calculateSD("RB");
+            calculatePerformanceSD("QB");
+            calculatePerformanceSD("WR");
+            calculatePerformanceSD("RB");
 
-            calculateZ("QB");
-            calculateZ("WR");
-            calculateZ("RB");
+            calculatePerformanceZ("QB");
+            calculatePerformanceZ("WR");
+            calculatePerformanceZ("RB");
 
-            calculatePercentile("QB");
-            calculatePercentile("WR");
-            calculatePercentile("RB");
+            calculatePerformancePercentile("QB");
+            calculatePerformancePercentile("WR");
+            calculatePerformancePercentile("RB");
 
-            console.log(dataByPlayers);
-            console.log("QBmean: " + qbMeanWeekly + " RBmean: " + rbMeanWeekly + " WRmean: " + wrMeanWeekly);
-            console.log("QBmean: " + qbMeanWeeklyPPR + " RBmean: " + rbMeanWeeklyPPR + " WRmean: " + wrMeanWeeklyPPR);
-            console.log("QBsd: " + qbSDWeekly + " RBsd: " + rbSDWeekly + " WRsd: " + wrSDWeekly);
-            console.log("QBsd: " + qbSDWeeklyPPR + " RBsd: " + rbSDWeeklyPPR + " WRsd: " + wrSDWeeklyPPR);
+            calculateConsistencyVariance();
+            calculateConsistencyMean();
+            calculateConsistencyZ();
+            calculateConsistencyPercentile();
+            addAvgPerformanceToPlayers();
+            addPlayerInfoToList();
+
+            paint();
 //======================================================================================================================
         });
     });
