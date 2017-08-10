@@ -4,6 +4,8 @@ var qbPlayerNames = [];
 var rbPlayerNames = [];
 var wrPlayerNames = [];
 
+var numOfGamesPlayedByPlayers = {};
+
 var qbMeanWeekly = 0;
 var rbMeanWeekly = 0;
 var wrMeanWeekly = 0;
@@ -18,7 +20,7 @@ var rbSDWeeklyPPR = 0;
 var wrSDWeekly = 0;
 var wrSDWeeklyPPR = 0;
 
-var minNumberPlayerInfo = {};
+var playerInfo = {};
 
 var qbVarianceMean = 0;
 var wrVarianceMean = 0;
@@ -50,6 +52,8 @@ d3.csv("Data/QBDataSetFinal.csv", function (errorQB, dataQB) {
             calcualteFantasyPoints("WR", "PPR");
             calcualteFantasyPoints("RB", "PPR");
 
+            eliminateIrrelevantPlayers();
+
             findMeanWeekly("QB");
             findMeanWeekly("RB");
             findMeanWeekly("WR");
@@ -74,6 +78,9 @@ d3.csv("Data/QBDataSetFinal.csv", function (errorQB, dataQB) {
             addPlayerInfoToList();
 
             paint();
+
+            console.log(playerInfoList);
+            console.log(playerInfo)
 //======================================================================================================================
         });
     });

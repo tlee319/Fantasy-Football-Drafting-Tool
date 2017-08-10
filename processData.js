@@ -1,17 +1,6 @@
 /**
  * Created by ThomasLee on 7/8/17.
  */
-
-function eliminateIrrelevantPlayers() {
-    // Get rid of players who haven't played in the past 2 years
-    // TODO: Iterate through the dictionary and do the said above
-    var x = 0;
-    playerNameList = Object.keys(dataByPlayers);
-
-    // Update the name list
-    playerNameList = Object.keys(dataByPlayers);
-}
-
 function processData(file, position) {
     d3.csv(file, function (error, data) {
         // Fix the name Job 1
@@ -76,13 +65,44 @@ function partitionByPosition () {
     })
 }
 
+function eliminateIrrelevantPlayers() {
+    var filteredList = [];
+    playerNameList.forEach(function (d) {
+        if (numOfGamesPlayedByPlayers[d] > 12) {
+            filteredList.push(d);
+        }
+    });
+
+    qbPlayerNames = [];
+    wrPlayerNames = [];
+    rbPlayerNames = [];
+
+    playerNameList = filteredList;
+
+    filteredList.forEach(function(name) {
+        seasonKey = Object.keys(dataByPlayers[name])[0];
+        weekKey = Object.keys(dataByPlayers[name][seasonKey])[0];
+        var playerPos = dataByPlayers[name][seasonKey][weekKey]["Pos"];
+
+        if (playerPos == "QB") {
+            qbPlayerNames.push(name);
+        } else if (playerPos == "WR") {
+            wrPlayerNames.push(name);
+        } else if (playerPos == "RB") {
+            rbPlayerNames.push(name);
+        }
+    })
+}
+
 function calcualteFantasyPoints(position, type) {
     if (position == "QB") {
         qbPlayerNames.forEach(function (player) {
+            var numberOfGames = 0;
             var seasonList = Object.keys(dataByPlayers[player]);
             seasonList.forEach(function (season) {
                 var weekList = Object.keys(dataByPlayers[player][season]);
                 weekList.forEach(function (week) {
+                    numberOfGames++;
                     var tdPass;
                     var pYrd;
                     var int;
@@ -149,13 +169,18 @@ function calcualteFantasyPoints(position, type) {
                     }
                 });
             });
+            if (isNaN(numOfGamesPlayedByPlayers[player])) {
+                numOfGamesPlayedByPlayers[player] = numberOfGames;
+            }
         });
     } else if (position == "WR") {
         wrPlayerNames.forEach(function (player) {
+            var numberOfGames = 0;
             var seasonList = Object.keys(dataByPlayers[player]);
             seasonList.forEach(function (season) {
                 var weekList = Object.keys(dataByPlayers[player][season]);
                 weekList.forEach(function (week) {
+                    numberOfGames++;
                     var tdPass;
                     var pYrd;
                     var int;
@@ -223,13 +248,18 @@ function calcualteFantasyPoints(position, type) {
                     }
                 });
             });
+            if (isNaN(numOfGamesPlayedByPlayers[player])) {
+                numOfGamesPlayedByPlayers[player] = numberOfGames;
+            }
         });
     } else if (position == "RB") {
         rbPlayerNames.forEach(function (player) {
+            var numberOfGames = 0;
             var seasonList = Object.keys(dataByPlayers[player]);
             seasonList.forEach(function (season) {
                 var weekList = Object.keys(dataByPlayers[player][season]);
                 weekList.forEach(function (week) {
+                    numberOfGames++;
                     var tdPass;
                     var pYrd;
                     var int;
@@ -298,6 +328,9 @@ function calcualteFantasyPoints(position, type) {
 
                 });
             });
+            if (isNaN(numOfGamesPlayedByPlayers[player])) {
+                numOfGamesPlayedByPlayers[player] = numberOfGames;
+            }
         });
     }
 }
@@ -403,10 +436,10 @@ function calculatePerformanceSD(position) {
         wrSDWeekly = Math.sqrt(sum / num);
         wrSDWeeklyPPR = Math.sqrt(sumPPR / num);
     } else if (position == "RB") {
+        var sum = 0;
+        var sumPPR = 0;
+        var num = 0;
         rbPlayerNames.forEach(function (player) {
-            var sum = 0;
-            var sumPPR = 0;
-            var num = 0;
             var seasonList = Object.keys(dataByPlayers[player]);
             seasonList.forEach(function (season) {
                 var weekList = Object.keys(dataByPlayers[player][season]);
@@ -418,9 +451,9 @@ function calculatePerformanceSD(position) {
                     num++;
                 });
             });
-            rbSDWeekly = Math.sqrt(sum / num);
-            rbSDWeeklyPPR = Math.sqrt(sumPPR / num);
         });
+        rbSDWeekly = Math.sqrt(sum / num);
+        rbSDWeeklyPPR = Math.sqrt(sumPPR / num);
     }
 }
 
@@ -812,7 +845,6 @@ function calculateConsistencyVariance() {
         seasonList.forEach(function (season) {
             var weekList = Object.keys(dataByPlayers[player][season]);
             weekList.forEach(function (week) {
-                numberOfGamesPlayed++;
                 var x = dataByPlayers[player][season][week]["pts"];
                 var xPPR = dataByPlayers[player][season][week]["ptsPPR"];
 
@@ -824,7 +856,7 @@ function calculateConsistencyVariance() {
         var variance = sdSum / numberOfGamesPlayed;
         var variancePPR = sdSumPPR / numberOfGamesPlayed;
 
-        minNumberPlayerInfo[player] = {"numGames": numberOfGamesPlayed, "variance": variance, "variancePPR": variancePPR, "pos": "qb"};
+        playerInfo[player] = {"numGames": numberOfGamesPlayed, "variance": variance, "variancePPR": variancePPR, "pos": "qb"};
     });
 
     wrPlayerNames.forEach(function (player) {
@@ -838,6 +870,9 @@ function calculateConsistencyVariance() {
                 numberOfGamesPlayed++;
                 var x = dataByPlayers[player][season][week]["pts"];
                 var xPPR = dataByPlayers[player][season][week]["ptsPPR"];
+
+                sum += dataByPlayers[player][season][week]["pts"];
+                sumPPR += dataByPlayers[player][season][week]["ptsPPR"];
             });
         });
 
@@ -849,7 +884,6 @@ function calculateConsistencyVariance() {
         seasonList.forEach(function (season) {
             var weekList = Object.keys(dataByPlayers[player][season]);
             weekList.forEach(function (week) {
-                numberOfGamesPlayed++;
                 var x = dataByPlayers[player][season][week]["pts"];
                 var xPPR = dataByPlayers[player][season][week]["ptsPPR"];
 
@@ -861,7 +895,7 @@ function calculateConsistencyVariance() {
         var variance = sdSum / numberOfGamesPlayed;
         var variancePPR = sdSumPPR / numberOfGamesPlayed;
 
-        minNumberPlayerInfo[player] = {"numGames": numberOfGamesPlayed, "variance": variance, "variancePPR": variancePPR, "pos": "wr"};
+        playerInfo[player] = {"numGames": numberOfGamesPlayed, "variance": variance, "variancePPR": variancePPR, "pos": "wr"};
     });
 
     rbPlayerNames.forEach(function (player) {
@@ -875,6 +909,9 @@ function calculateConsistencyVariance() {
                 numberOfGamesPlayed++;
                 var x = dataByPlayers[player][season][week]["pts"];
                 var xPPR = dataByPlayers[player][season][week]["ptsPPR"];
+
+                sum += dataByPlayers[player][season][week]["pts"];
+                sumPPR += dataByPlayers[player][season][week]["ptsPPR"];
             });
         });
 
@@ -886,7 +923,6 @@ function calculateConsistencyVariance() {
         seasonList.forEach(function (season) {
             var weekList = Object.keys(dataByPlayers[player][season]);
             weekList.forEach(function (week) {
-                numberOfGamesPlayed++;
                 var x = dataByPlayers[player][season][week]["pts"];
                 var xPPR = dataByPlayers[player][season][week]["ptsPPR"];
 
@@ -898,12 +934,11 @@ function calculateConsistencyVariance() {
         var variance = sdSum / numberOfGamesPlayed;
         var variancePPR = sdSumPPR / numberOfGamesPlayed;
 
-        minNumberPlayerInfo[player] = {"numGames": numberOfGamesPlayed, "variance": variance, "variancePPR": variancePPR, "pos": "rb"};
+        playerInfo[player] = {"numGames": numberOfGamesPlayed, "variance": variance, "variancePPR": variancePPR, "pos": "rb"};
     });
 }
 
 function calculateConsistencyMean() {
-    // We only care about players with more than 14 games.
     var qbSum = 0;
     var rbSum = 0;
     var wrSum = 0;
@@ -917,20 +952,18 @@ function calculateConsistencyMean() {
     var wrNum = 0;
 
     playerNameList.forEach(function(player) {
-        if (minNumberPlayerInfo[player]["numGames"] > 14) {
-            if (minNumberPlayerInfo[player]["pos"] == "qb") {
-                qbSum += minNumberPlayerInfo[player]["variance"];
-                qbSumPPR += minNumberPlayerInfo[player]["variancePPR"];
-                qbNum++;
-            } else if (minNumberPlayerInfo[player]["pos"] == "rb") {
-                rbSum += minNumberPlayerInfo[player]["variance"];
-                rbSumPPR += minNumberPlayerInfo[player]["variancePPR"];
-                rbNum++;
-            } else if (minNumberPlayerInfo[player]["pos"] == "wr") {
-                wrSum += minNumberPlayerInfo[player]["variance"];
-                wrSumPPR += minNumberPlayerInfo[player]["variancePPR"];
-                wrNum++;
-            }
+        if (playerInfo[player]["pos"] == "qb") {
+            qbSum += playerInfo[player]["variance"];
+            qbSumPPR += playerInfo[player]["variancePPR"];
+            qbNum++;
+        } else if (playerInfo[player]["pos"] == "rb") {
+            rbSum += playerInfo[player]["variance"];
+            rbSumPPR += playerInfo[player]["variancePPR"];
+            rbNum++;
+        } else if (playerInfo[player]["pos"] == "wr") {
+            wrSum += playerInfo[player]["variance"];
+            wrSumPPR += playerInfo[player]["variancePPR"];
+            wrNum++;
         }
     });
 
@@ -950,18 +983,16 @@ function calculateConsistencyMean() {
     var wrSDSumPPR = 0;
 
     playerNameList.forEach(function(player) {
-        var playerDict = minNumberPlayerInfo[player];
-        if (playerDict["numGames"] > 14) {
-            if (playerDict["pos"] == "qb") {
-                qbSDSum += Math.pow((playerDict["variance"] - qbVarianceMean), 2);
-                qbSDSumPPR += Math.pow((playerDict["variance"] - qbVarianceMeanPPR), 2);
-            } else if (playerDict["pos"] == "rb") {
-                rbSDSum += Math.pow((playerDict["variance"] - rbVarianceMean), 2);
-                rbSDSumPPR += Math.pow((playerDict["variance"] - rbVarianceMeanPPR), 2);
-            } else if (playerDict["pos"] == "wr") {
-                wrSDSum += Math.pow((playerDict["variance"] - wrVarianceMean), 2);
-                wrSDSumPPR += Math.pow((playerDict["variance"] - wrVarianceMeanPPR), 2);
-            }
+        var playerDict = playerInfo[player];
+        if (playerDict["pos"] == "qb") {
+            qbSDSum += Math.pow((playerDict["variance"] - qbVarianceMean), 2);
+            qbSDSumPPR += Math.pow((playerDict["variance"] - qbVarianceMeanPPR), 2);
+        } else if (playerDict["pos"] == "rb") {
+            rbSDSum += Math.pow((playerDict["variance"] - rbVarianceMean), 2);
+            rbSDSumPPR += Math.pow((playerDict["variance"] - rbVarianceMeanPPR), 2);
+        } else if (playerDict["pos"] == "wr") {
+            wrSDSum += Math.pow((playerDict["variance"] - wrVarianceMean), 2);
+            wrSDSumPPR += Math.pow((playerDict["variance"] - wrVarianceMeanPPR), 2);
         }
     });
 
@@ -972,20 +1003,16 @@ function calculateConsistencyMean() {
 
 function calculateConsistencyZ() {
     playerNameList.forEach(function(player) {
-        var playerDict = minNumberPlayerInfo[player];
-        if (playerDict["numGames"] > 14) {
-            if (playerDict["pos"] == "qb") {
-                var z = ((playerDict["variance"] - qbVarianceMean) / qbConsistencySD);
-                playerDict["z"] = z;
-            } else if (playerDict["pos"] == "rb") {
-                var z = ((playerDict["variance"] - rbVarianceMean) / rbConsistencySD);
-                playerDict["z"] = z;
-            } else if (playerDict["pos"] == "wr") {
-                var z = ((playerDict["variance"] - wrVarianceMean) / wrConsistencySD);
-                playerDict["z"] = z;
-            }
-        } else {
-            playerDict["z"] = 999;
+        var playerDict = playerInfo[player];
+        if (playerDict["pos"] == "qb") {
+            var z = ((playerDict["variance"] - qbVarianceMean) / qbConsistencySD);
+            playerDict["z"] = z;
+        } else if (playerDict["pos"] == "rb") {
+            var z = ((playerDict["variance"] - rbVarianceMean) / rbConsistencySD);
+            playerDict["z"] = z;
+        } else if (playerDict["pos"] == "wr") {
+            var z = ((playerDict["variance"] - wrVarianceMean) / wrConsistencySD);
+            playerDict["z"] = z;
         }
     });
 }
@@ -993,50 +1020,48 @@ function calculateConsistencyZ() {
 function calculateConsistencyPercentile() {
     d3.csv("Data/ZScoreTableSetFinal.csv", function(error, data) {
         playerNameList.forEach(function(player) {
-            var playerDict = minNumberPlayerInfo[player];
-            if (playerDict["numGames"] > 14) {
-                var roundedZScore100;
-                var roundedZScore10;
-                var positive = false;
-                var zScore = playerDict["z"];
+            var playerDict = playerInfo[player];
+            var roundedZScore100;
+            var roundedZScore10;
+            var positive = false;
+            var zScore = playerDict["z"];
 
-                if (zScore == 0) {
-                    playerDict["consistencyPercentile"] = 0.5;
-                } else if (zScore > 4.0) {
-                    playerDict["consistencyPercentile"] = 0.00001;
-                } else if (zScore < -4.0 ) {
-                    playerDict["consistencyPercentile"] = 0.99999;
-                } else {
-                    var subZ;
-                    if (zScore < 0) {
-                        roundedZScore100 = parseFloat(zScore.toString().substr(0, 5));
-                        roundedZScore10 = parseFloat(zScore.toString().substr(0, 4));
-                        subZ = Math.abs(roundedZScore100 - roundedZScore10);
-                    } else if (zScore > 0) {
-                        roundedZScore100 = parseFloat(zScore.toString().substr(0, 4));
-                        roundedZScore10 = parseFloat(zScore.toString().substr(0, 3));
-                        subZ = Math.abs(roundedZScore100 - roundedZScore10);
-                        roundedZScore10 = -roundedZScore10;
-                        positive = true;
-                    }
-                    subZ = parseFloat(subZ.toString().substr(0, 4));
-                    try {
-                        data.forEach(function (d) {
-                            if (parseFloat(d["Z"]) == roundedZScore10) {
-                                index = "Z" + subZ;
-                                var percentile = d[index];
-                                if (positive) {
-                                    playerDict["consistencyPercentile"] = parseFloat(percentile);
-                                    throw BreakException;
-                                } else {
-                                    playerDict["consistencyPercentile"] = parseFloat(parseFloat(1.0 - percentile));
-                                    throw BreakException;
-                                }
+            if (zScore == 0) {
+                playerDict["consistencyPercentile"] = 0.5;
+            } else if (zScore > 4.0) {
+                playerDict["consistencyPercentile"] = 0.00001;
+            } else if (zScore < -4.0 ) {
+                playerDict["consistencyPercentile"] = 0.99999;
+            } else {
+                var subZ;
+                if (zScore < 0) {
+                    roundedZScore100 = parseFloat(zScore.toString().substr(0, 5));
+                    roundedZScore10 = parseFloat(zScore.toString().substr(0, 4));
+                    subZ = Math.abs(roundedZScore100 - roundedZScore10);
+                } else if (zScore > 0) {
+                    roundedZScore100 = parseFloat(zScore.toString().substr(0, 4));
+                    roundedZScore10 = parseFloat(zScore.toString().substr(0, 3));
+                    subZ = Math.abs(roundedZScore100 - roundedZScore10);
+                    roundedZScore10 = -roundedZScore10;
+                    positive = true;
+                }
+                subZ = parseFloat(subZ.toString().substr(0, 4));
+                try {
+                    data.forEach(function (d) {
+                        if (parseFloat(d["Z"]) == roundedZScore10) {
+                            index = "Z" + subZ;
+                            var percentile = d[index];
+                            if (positive) {
+                                playerDict["consistencyPercentile"] = parseFloat(percentile);
+                                throw BreakException;
+                            } else {
+                                playerDict["consistencyPercentile"] = parseFloat(parseFloat(1.0 - percentile));
+                                throw BreakException;
                             }
-                        });
-                    } catch (e) {
+                        }
+                    });
+                } catch (e) {
 
-                    }
                 }
             }
         });
@@ -1057,7 +1082,7 @@ function addAvgPerformanceToPlayers() {
                     num++;
                 });
             });
-            minNumberPlayerInfo[player]["avgPerformancePercentile"] = sum / num;
+            playerInfo[player]["avgPerformancePercentile"] = sum / num;
         });
 
         rbPlayerNames.forEach(function (player) {
@@ -1073,7 +1098,7 @@ function addAvgPerformanceToPlayers() {
                 });
             });
 
-            minNumberPlayerInfo[player]["avgPerformancePercentile"] = sum / num;
+            playerInfo[player]["avgPerformancePercentile"] = sum / num;
         });
 
         wrPlayerNames.forEach(function (player) {
@@ -1089,7 +1114,7 @@ function addAvgPerformanceToPlayers() {
                 });
             });
 
-            minNumberPlayerInfo[player]["avgPerformancePercentile"] = sum / num;
+            playerInfo[player]["avgPerformancePercentile"] = sum / num;
         });
     });
 }
@@ -1097,17 +1122,19 @@ function addAvgPerformanceToPlayers() {
 function addPlayerInfoToList() {
     d3.csv("Data/ZScoreTableSetFinal.csv", function(error, data) {
         playerNameList.forEach(function (player) {
-            if (!isNaN(minNumberPlayerInfo[player]["consistencyPercentile"])) {
+            if (!isNaN(playerInfo[player]["consistencyPercentile"])) {
                 playerInfoList.push({
                     "name": player,
-                    "performancePercentile": minNumberPlayerInfo[player]["avgPerformancePercentile"],
-                    "consistencyPercentile": minNumberPlayerInfo[player]["consistencyPercentile"]
+                    "performancePercentile": playerInfo[player]["avgPerformancePercentile"],
+                    "consistencyPercentile": playerInfo[player]["consistencyPercentile"],
+                    "numGames": playerInfo[player]["numGames"]
                 });
             } else {
                 playerInfoList.push({
                     "name": player,
-                    "performancePercentile": minNumberPlayerInfo[player]["avgPerformancePercentile"],
-                    "consistencyPercentile": 0.0
+                    "performancePercentile": playerInfo[player]["avgPerformancePercentile"],
+                    "consistencyPercentile": 0.0,
+                    "numGames": playerInfo[player]["numGames"]
                 });
             }
         });
